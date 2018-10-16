@@ -1,0 +1,296 @@
+exclude arcane-disrupting
+
+consider stats
+
+off-set of str/con
+
+deconstruct stats to their constituent bonuses
+
+
+
+
+
+----------------------------scrying orb in inven----------------------
+[carried] = {
+  [auto_id] = 3
+}
+[name] = Scrying Orb
+[power_source] = {
+  [unknown] = true
+}
+[subtype] = orb
+[type] = orb
+
+--------------------transmo chest in inven--------------------------------------------------
+[name] = Transmogrification Chest
+[carried] = {
+  [has_transmo] = 8
+}
+[power_source] = {
+  [unknown] = true
+  [arcane] = false
+}
+[rarity] = 9
+[subtype] = sher'tul
+
+-------------------------equipped magestaff-----------------------------------------------
+[wielded] = {
+  [combat_spellpower] = 4
+  [inc_damage] = 5
+  [combat_spellcrit] = 7
+  [learn_talent] = 6
+}
+[level_range] = {
+  [2] = 10
+  [1] = 1
+}
+[material_level] = 1
+[carried] = {
+}
+[wielder] = {
+  [combat_spellpower] = 3
+  [inc_damage] = {
+    [LIGHTNING] = 10
+  }
+  [learn_talent] = {
+    [T_COMMAND_STAFF] = 1
+  }
+  [combat_spellcrit] = 1
+}
+[slot] = MAINHAND
+[rarity] = 4
+[slot_forbid] = OFFHAND
+[combat] = {
+  [talented] = staff
+  [physspeed] = 1
+  [physcrit] = 2.5
+  [dammod] = {
+    [mag] = 0.8
+  }
+  [dam] = 10
+  [element] = LIGHTNING
+  [damtype] = PHYSICAL
+  [sound] = {
+    [1] = actions/melee
+    [pitch] = 0.6
+    [vol] = 1.2
+  }
+  [damrange] = 1.2
+  [apr] = 2
+  [sound_miss] = {
+    [1] = actions/melee
+    [pitch] = 0.6
+    [vol] = 1.2
+  }
+}
+[subtype] = staff
+[type] = weapon
+[require] = {
+  [stat] = {
+    [mag] = 11
+  }
+}
+[name] = elm magestaff
+[encumber] = 5
+
+---------------------------------transmo'd dagger in inven------------------
+[material_level] = 1
+[power_source] = {
+  [arcane] = true
+}
+[__transmo] = true
+[slot] = MAINHAND
+[metallic] = true
+[rarity] = 5
+[combat] = {
+  [talented] = knife
+  [physspeed] = 1
+  [physcrit] = 4
+  [dammod] = {
+    [dex] = 0.45
+    [str] = 0.45
+  }
+  [dam] = 9.5
+  [burst_on_hit] = {
+    [FIRE] = 4
+  }
+  [sound] = {
+    [1] = actions/melee
+    [pitch] = 1.2
+    [vol] = 1.2
+  }
+  [damrange] = 1.3
+  [apr] = 5
+  [sound_miss] = {
+    [1] = actions/melee
+    [pitch] = 1.2
+    [vol] = 1.2
+  }
+}
+[offslot] = OFFHAND
+[subtype] = dagger
+[type] = weapon
+[require] = {
+  [stat] = {
+    [dex] = 11
+  }
+}
+[name] = flaming iron dagger
+[encumber] = 1
+
+--------------------------------transmo'd iron chain shirt ---------------------------
+[material_level] = 1
+[power_source] = {
+  [technique] = true
+}
+[__transmo] = true
+[slot] = BODY
+[wielder] = {
+  [resists] = {
+    [LIGHTNING] = 16
+  }
+  [fatigue] = 12
+  [combat_armor] = 4
+  [combat_def] = 2
+}
+[subtype] = heavy
+[encumber] = 14
+[type] = armor
+[require] = {
+  [talent] = {
+    [1] = T_ARMOUR_TRAINING
+  }
+  [stat] = {
+    [str] = 14
+  }
+}
+[name] = iron mail armour of lightning resistance
+
+------------------------------------flamewrought gloves equipped ------------------------
+
+[randart_able] = /data/general/objects/random-artifacts/gloves.lua
+[color_bg] = -1
+[talents_types] = {
+}
+[stat_picked_up] = true
+[egos] = /data/general/objects/egos/gloves.lua
+[wielded] = {
+  [combat] = 1734
+  [combat_armor] = 1735
+  [resists] = 1736
+  [inc_damage] = 1737
+  [combat_mindpower] = 1738
+  [inc_stats] = 1739
+}
+[sustain_talents] = {
+}
+[color_r] = 201
+[level_range] = {
+  [1] = 5
+  [2] = 12
+}
+[identified] = true
+[material_level] = 1
+[cost] = 50
+[energy] = {
+  [used] = false
+  [value] = 0
+}
+[encumber] = 1
+[color_bb] = -1
+[_mo] = userdata: 0x19b1ce90
+[desc] = These gloves seems to be made out of the exoskeletons of ritches. They are hot to the touch.
+[use_talent] = {
+  [level] = 3
+  [id] = T_RITCH_FLAMESPITTER_BOLT
+  [power] = 8
+}
+[droppedBy] = Prox the Mighty
+[define_as] = FLAMEWROUGHT
+[carried] = {
+}
+[__CLASSNAME] = mod.class.Object
+[talents_cd] = {
+}
+[name] = Flamewrought
+[add_name] =  (#ARMOR#)
+[__particles] = {
+[power_source] = {
+  [nature] = true
+}
+[talents] = {
+}
+[talents_learn_vals] = {
+}
+[wielder] = {
+  [combat] = {
+    [accuracy_effect] = axe
+    [physcrit] = 1
+    [dammod] = {
+      [cun] = 0.4
+      [dex] = 0.4
+      [str] = -0.6
+    }
+    [melee_project] = {
+      [FIRE] = 10
+    }
+    [talent_on_hit] = {
+      [T_RITCH_FLAMESPITTER_BOLT] = {
+        [level] = 3
+        [chance] = 30
+      }
+    }
+    [apr] = 7
+    [physspeed] = 0
+    [convert_damage] = {
+      [FIRE] = 100
+    }
+    [dam] = 5
+  }
+  [combat_armor] = 2
+  [resists] = {
+    [FIRE] = 10
+  }
+  [inc_damage] = {
+    [FIRE] = 5
+  }
+  [combat_mindpower] = 2
+  [inc_stats] = {
+    [5] = 2
+    [4] = 3
+  }
+}
+[__transmo] = false
+[__ATOMIC] = true
+[slot] = HANDS
+[uid] = 8902
+[talents_confirm_use] = {
+}
+[color_g] = 0
+[egos_chance] = {
+  [prefix] = 15
+  [suffix] = 5
+}
+[color_b] = 0
+[moddable_tile] = special/gloves_flamewrought
+[max_power] = 24
+[rarity] = 180
+[talents_types_mastery] = {
+}
+[tint_g] = 1
+[color_br] = -1
+[tint_b] = 1
+[power] = 1
+[_last_mo] = userdata: 0x19b1ce90
+[unique] = Flamewrought
+[subtype] = hands
+[power_regen] = 1
+[changed] = true
+[display] = [
+[image] = object/artifact/gloves_flamewrought.png
+[auto_moddable_tile_check] = true
+[type] = armor
+[talents_auto] = {
+}
+[unided_name] = chitinous gloves
+[tint_r] = 1
