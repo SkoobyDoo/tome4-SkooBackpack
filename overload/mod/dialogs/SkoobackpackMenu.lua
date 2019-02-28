@@ -28,10 +28,10 @@ end
 
 local menuActions = {
 	statvalueconfig = function()
-		--print("[Skoobackpack] [Menu] skillconfig menu action chosen.")
-		--local d = require("mod.dialogs.BotTalentDialog").new(game.player)
+		print("[Skoobackpack] [Menu] statvalueconfig menu action chosen.")
+		local d = require("mod.dialogs.ItemStatValueDialog").new(game.player)
 		
-		--game:registerDialog(d)
+		game:registerDialog(d)
 	end,
 }
 
