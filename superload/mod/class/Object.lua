@@ -24,6 +24,17 @@ function recSum(list)
 	return sum
 end
 
+-- implementation of string split
+function split(self, pat)
+  pat = pat or '%s+'
+  local st, g = 1, self:gmatch("()("..pat..")")
+  local function getter(segs, seps, sep, cap1, ...)
+    st = sep and seps + #sep
+    return self:sub(segs, (seps or 0) - 1), cap1 or sep, ...
+  end
+  return function() if st then return getter(st, g()) end end
+end
+
 -------------------------------------------------------
 --================ VARIABLES ================--
 
@@ -31,78 +42,53 @@ local _M = loadPrevious(...)
 
 -------------------------------------------------------
 
--- local function offensePowerLevel(power, critChance, critBonus, speed)
-	-- return power * (1+critChance or 0) * (critBonus or 0+1.5) * speed or 1
--- end
-
--- local function weaponPowerLevels(actor)
-	-- local attackScores = {}
-	-- local temp = {}
-	-- temp.o = actor:getInven(actor.INVEN_MAINHAND)
-	-- temp.ammo = table.get(actor:getInven("QUIVER"), 1)
-	-- temp.archery = temp.o
-		-- and temp.o[1]
-		-- and temp.o[1].archery
-		-- and temp.ammo
-		-- and temp.ammo.archery_ammo == temp.o[1].archery
-		-- and temp.ammo.combat
-		-- and (type ~= "offhand" or actor:attr("can_offshoot"))
-		-- and (type ~= "psionic" or actor:attr("psi_focus_combat")) -- ranged combat
-	
-	-- if temp.archery then
-		-- attackScores.ranged = actor:combatDamage(actor.combat, nil, temp.ammo.combat)
-	-- end
-	-- attackScores.melee = not attackScores.ranged and temp.o and temp.o[1] and temp.o[1].combat.dam or actor:combatDamage(actor.combat)
-	-- return attackScores
--- end
-
--- function _M:evaluatePowerScores()
-	-- local scores = {}
-	-- scores.survivalScore = self.life/10 * self.life/self.max_life
-	-- scores.physScore = offensePowerLevel(self.combat_dam, self.combat_generic_crit or 1+self.combat_physcrit, self.combat_critical_power,self.combat_physspeed)
-	-- scores.spellScore = offensePowerLevel(self.combat_spellpower, self.combat_generic_crit or 1+self.combat_spellcrit, self.combat_critical_power,self.combat_spellspeed)
-	-- scores.mindScore = offensePowerLevel(self.combat_mindpower, self.combat_generic_crit or 1+self.combat_mindcrit, self.combat_critical_power,self.combat_mindspeed)
-	-- scores.defenseScore = self.combat_def/2 + self.combat_armor
-	-- scores.statScore = reduce(self.inc_stats, function(a,b) return a+b end)
-	
-	-- scores.attackScores = weaponPowerLevels(self)
-	-- return scores
--- end
-
--- function _M:evaluatePowerLevel()
-	-- return recSum(self:evaluatePowerScores())
--- end
-
-local old_tooltip = _M.tooltip
-function _M:tooltip(x, y, use_actor)
-	local result = old_tooltip(self, x, y, use_actor)
-	print("[SkooBackpack] Object Tooltip Infiltration Successful!")
-	if core.key.modState("ctrl") then
-		table.print(self)
-		-- local scores = self:evaluatePowerScores()
-		-- result:add(true, "#FFD700#Power Level#FFFFFF#: "..string.format("%d",recSum(scores)), {"color", "WHITE"})
-		-- for k,v in pairs(scores) do
-			-- if type(v) ~= "table" then
-				-- result:add(true, " #FFD700#"..k.."#FFFFFF#: "..string.format("%1.2f",v))
-			-- else
-				-- for k2,v2 in pairs(v) do
-					-- result:add(true, " #FFD700#Weapon "..k2.."#FFFFFF#: "..string.format("%1.2f",v2))
-				-- end
-			-- end
-		-- end
-	else
-		--result:add(true, "#FFD700#Power Level#FFFFFF#: "..string.format("%d",self:evaluatePowerLevel()), {"color", "WHITE"})
+function _M:evaluatePowerScores(actor)
+	-- uses the skoobackpackscoredefs of the actor to evaluate SELF item, returning the set of scores that contribute
+	local scores = {}
+	for i,ruledef in ipairs(actor.skoobackpackscoredefs) do
+		local tmp = self;
+		for v in split(ruledef.propstring,"\\") do
+			print("Next dest: ","'"..v.."'")
+			tmp=tmp[v]
+			print("tmp=",tmp)
+			table.print(tmp)
+			if tmp == nil then break end
+		end
+		print("[Skoobackpack]","[HIGHLIGHT]","tmp=",tmp)
+		
+		if tmp then
+			if 'number' == type(tmp) and tmp ~= 0 then
+				scores[ruledef.label] = tmp * ruledef.multiplier
+			else
+				scores[ruledef.label] = ruledef.multiplier
+			end
+		end
 	end
-    return result
+	return scores
 end
 
---(name_param, compare_with, never_compare, use_actor)
+function _M:evaluatePowerLevel(actor)
+	-- uses the skoobackpackscoredefs of the actor to evaluate SELF item, returning the set of scores that contribute
+	return recSum(self:evaluatePowerScores(actor))
+end
+
 local old_getDesc = _M.getDesc
 function _M:getDesc(name_param, compare_with, never_compare, use_actor)
 	local result = old_getDesc(self, name_param, compare_with, never_compare, use_actor)
-	print("[SkooBackpack] Object getDesc Infiltration Successful!")
-	if core.key.modState("ctrl") then
-		table.print(self)
+	if core.key.modState("alt") then
+		local scores = self:evaluatePowerScores(game.player)
+		result:add(true, "#FFD700#Power Level#FFFFFF#: "..string.format("%d",recSum(scores)), {"color", "WHITE"})
+		for k,v in pairs(scores) do
+			if type(v) ~= "table" then
+				result:add(true, " #FFD700#"..k.."#FFFFFF#: "..string.format("%1.2f",v))
+			else
+				for k2,v2 in pairs(v) do
+					result:add(true, " #FFD700#Weapon "..k2.."#FFFFFF#: "..string.format("%1.2f",v2))
+				end
+			end
+		end
+	else
+		result:add(true, "#FFD700#Power Level#FFFFFF#: "..string.format("%d",self:evaluatePowerLevel(game.player)), {"color", "WHITE"})
 	end
     return result
 end
