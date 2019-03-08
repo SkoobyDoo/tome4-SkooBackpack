@@ -48,13 +48,9 @@ function _M:evaluatePowerScores(actor)
 	for i,ruledef in ipairs(actor.skoobackpackscoredefs) do
 		local tmp = self;
 		for v in split(ruledef.propstring,"\\") do
-			print("Next dest: ","'"..v.."'")
 			tmp=tmp[v]
-			print("tmp=",tmp)
-			table.print(tmp)
 			if tmp == nil then break end
 		end
-		print("[Skoobackpack]","[HIGHLIGHT]","tmp=",tmp)
 		
 		if tmp then
 			if 'number' == type(tmp) and tmp ~= 0 then
